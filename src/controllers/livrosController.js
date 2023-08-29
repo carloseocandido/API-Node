@@ -2,7 +2,6 @@ import livros from "../models/Livro.js";
 
 class LivroController {
 
-  //Usando Promises
   static listarLivros = async (req, res) => {
 
     try {
@@ -13,6 +12,7 @@ class LivroController {
     } catch (err) {
       res.status(500).json({ message: `${err.message} - falha ao buscar livros` });
     }
+
   };
 
   static listarLivroPorId = async (req, res) => {
@@ -26,6 +26,7 @@ class LivroController {
     } catch (err) {
       res.status(500).json({ message: `${err.message} - falha ao buscar livro` });
     }
+
   };
 
   static cadastrarLivro = async (req, res) => {
@@ -36,6 +37,7 @@ class LivroController {
     } catch (err) {
       res.status(500).json({ message: `${err.message} - falha ao cadastrar livro` });
     }
+
   };
 
   static atualizarLivro = async (req, res) => {
@@ -46,6 +48,7 @@ class LivroController {
     } catch (err) {
       res.status(500).json({ message: `${err.message} - falha ao atualizar livro` });
     }
+
   };
 
   static excluirLivro = async (req, res) => {
@@ -56,6 +59,7 @@ class LivroController {
     } catch (err) {
       res.status(500).json({ message: `${err.message} - falha ao excluir livro` });
     }
+
   };
 
   static listarLivroPorEditora = async (req, res) => {
@@ -67,6 +71,7 @@ class LivroController {
     } catch (err) {
       res.status(500).json({ message: `${err.message} - falha ao encontrar livro por editora` });
     }
+    
   };
 }
 
