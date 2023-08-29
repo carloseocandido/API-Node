@@ -4,27 +4,41 @@ class LivroController {
 
     //Usando Promises
     static listarLivros = (req, res) => {
-        livros.find().then(livros => {
-            res.status(200).json(livros);
-        })
+        livros.find()
+            .populate('autor') //relacionando campo autor
+            .exec()
+            .then(livros => {
+                res.status(200).json(livros);
+            })
             .catch(err => {
                 res.status(500).json({ message: `${err.message} - falha ao cadastrar livro` });
             })
     }
 
-    static listarLivroPorId = (req, res) => {
-        const id = req.params.id;
+    //Usando async
+    static listarLivroPorId = async (req, res) => {
 
-        livros.findById(id)
-            .then(livro => {
-                res.status(200).json(livro);
-            })
-            .catch(err => {
-                res.status(500).json({ message: `${err.message} - falha ao buscar livro` });
-            })
+        try {
+            const id = req.params.id;
+            const livro = await livros.findById(id)
+                .populate('autor', 'nome')
+                .exec() 
+            res.status(200).json(livro);
+        } catch (err) {
+            res.status(500).json({ message: `${err.message} - falha ao buscar livro` }); 
+        }
+        /* código old*/
+        // const id = req.params.id;
+
+        // livros.findById(id)
+        //     .then(livro => {
+        //         res.status(200).json(livro);
+        //     })
+        //     .catch(err => {
+        //         res.status(500).json({ message: `${err.message} - falha ao buscar livro` });
+        //     })
     }
 
-    //Usando async
     static cadastrarLivro = async (req, res) => {
         try {
             let livro = new livros(req.body);
