@@ -1,6 +1,6 @@
 import livros from "../models/Livro.js";
 
-class livroController {
+class LivroController {
 
     //Usando Promises
     static listarLivros = (req, res) => {
@@ -56,4 +56,4 @@ class livroController {
     }
 }
 
-export default livroController
+export default LivroController
