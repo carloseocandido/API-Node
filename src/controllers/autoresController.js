@@ -8,7 +8,7 @@ class AutorController {
       const atoresResultado = await autores.find();
       res.status(200).json(atoresResultado);
     } catch (err) {
-      res.status(500).json({ message: `${err.message} - erro ao buscar autores` });
+      res.status(500).json({ message: `${err.message} - erro ao buscar autores.` });
     }
   };
 
@@ -18,15 +18,15 @@ class AutorController {
       const autor = await autores.findById(id);
 
       if (!autor)
-        return res.status(404).send({ message: "Id do Autor não localizado" });
+        return res.status(404).send({ message: "Id do Autor não localizado." });
 
       res.status(200).json(autor);
 
     } catch (err) {
       if (err instanceof mongoose.Error.CastError) 
-        return res.status(400).send({ message: "Um ou mais dados fornecidos estão incorretos" });
+        return res.status(400).send({ message: "Um ou mais dados fornecidos estão incorretos." });
 
-      res.status(500).json({ message: `${err.message} - falha ao buscar autor` });
+      res.status(500).json({ message: `${err.message} - falha ao buscar autor.` });
     }
   };
 
@@ -36,7 +36,7 @@ class AutorController {
       await autor.save();
       res.status(201).send(autor.toJSON());
     } catch (err) {
-      res.status(500).json({ message: `${err.message} - falha ao cadastrar autor` });
+      res.status(500).json({ message: `${err.message} - falha ao cadastrar autor.` });
     }
   };
 
@@ -44,9 +44,9 @@ class AutorController {
     try {
       const id = req.params.id;
       await autores.findByIdAndUpdate(id, { $set: req.body });
-      res.status(200).json({ message: "autor atualizado com sucesso" });
+      res.status(200).json({ message: "autor atualizado com sucesso." });
     } catch (err) {
-      res.status(500).json({ message: `${err.message} - falha ao atualizar autor` });
+      res.status(500).json({ message: `${err.message} - falha ao atualizar autor.` });
     }
   };
 
@@ -54,9 +54,9 @@ class AutorController {
     try {
       const id = req.params.id;
       await autores.findByIdAndDelete(id);
-      res.status(200).json({ message: "autor excluído com sucesso" });
+      res.status(200).json({ message: "autor excluído com sucesso." });
     } catch (err) {
-      res.status(500).json({ message: `${err.message} - falha ao excluir autor` });
+      res.status(500).json({ message: `${err.message} - falha ao excluir autor.` });
     }
   };
 }
