@@ -7,7 +7,7 @@ class AutorController {
       const atoresResultado = await autores.find();
       res.status(200).json(atoresResultado);
     } catch (err) {
-      res.status(500).json({ message: `${err.message} - erro ao buscar autores` });
+      res.status(400).json({ message: `${err.message} - erro ao buscar autores` });
     }
   };
 
@@ -17,7 +17,7 @@ class AutorController {
       const autor = await autores.findById(id);
       res.status(200).json(autor);
     } catch (err) {
-      res.status(500).json({ message: `${err.message} - falha ao buscar autor` });
+      res.status(400).json({ message: `${err.message} - falha ao buscar autor` });
     }
   };
 
@@ -27,7 +27,7 @@ class AutorController {
       await autor.save();
       res.status(201).send(autor.toJSON());
     } catch (err) {
-      res.status(500).json({ message: `${err.message} - falha ao cadastrar autor` });
+      res.status(400).json({ message: `${err.message} - falha ao cadastrar autor` });
     }
   };
 
@@ -37,7 +37,7 @@ class AutorController {
       await autores.findByIdAndUpdate(id, { $set: req.body });
       res.status(200).json({ message: "autor atualizado com sucesso" });
     } catch (err) {
-      res.status(500).json({ message: `${err.message} - falha ao atualizar autor` });
+      res.status(400).json({ message: `${err.message} - falha ao atualizar autor` });
     }
   };
 
@@ -47,7 +47,7 @@ class AutorController {
       await autores.findByIdAndDelete(id);
       res.status(200).json({ message: "autor excluído com sucesso" });
     } catch (err) {
-      res.status(500).json({ message: `${err.message} - falha ao excluir autor` });
+      res.status(400).json({ message: `${err.message} - falha ao excluir autor` });
     }
   };
 }
