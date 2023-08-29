@@ -22,10 +22,10 @@ class LivroController {
             const id = req.params.id;
             const livro = await livros.findById(id)
                 .populate('autor', 'nome')
-                .exec() 
+                .exec()
             res.status(200).json(livro);
         } catch (err) {
-            res.status(500).json({ message: `${err.message} - falha ao buscar livro` }); 
+            res.status(500).json({ message: `${err.message} - falha ao buscar livro` });
         }
         /* código old*/
         // const id = req.params.id;
@@ -66,6 +66,17 @@ class LivroController {
             res.status(200).json({ message: 'Livro excluído com sucesso' });
         } catch (err) {
             res.status(500).json({ message: `${err.message} - falha ao excluir livro` });
+        }
+    }
+
+    static listarLivroPorEditora = async (req, res) => {
+        try {
+            const editora = req.query.editora;
+
+            const livro = await livros.find({ 'editora': editora }, {});
+            res.status(200).json(livro);
+        } catch (err) {
+            res.status(500).json({ message: `${err.message} - falha ao encontrar livro por editora` })
         }
     }
 }
