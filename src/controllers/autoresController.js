@@ -2,29 +2,25 @@ import autores from "../models/Autor.js";
 
 class AutorController {
 
-  //Usando Promises
-  static listarAutores = (req, res) => {
-    autores.find().then(autores => {
-      res.status(200).json(autores);
-    })
-      .catch(err => {
-        res.status(500).json({ message: `${err.message} - falha ao cadastrar autor` });
-      });
+  static listarAutores = async (req, res) => {
+    try {
+      const atoresResultado = await autores.find();
+      res.status(200).json(atoresResultado);
+    } catch (err) {
+      res.status(500).json({ message: `${err.message} - erro ao buscar autores` });
+    }
   };
 
-  static listarAutorPorId = (req, res) => {
-    const id = req.params.id;
-
-    autores.findById(id)
-      .then(autor => {
-        res.status(200).json(autor);
-      })
-      .catch(err => {
-        res.status(500).json({ message: `${err.message} - falha ao buscar autor` });
-      });
+  static listarAutorPorId = async (req, res) => {
+    try {
+      const id = req.params.id;
+      const autor = await autores.findById(id);
+      res.status(200).json(autor);
+    } catch (err) {
+      res.status(500).json({ message: `${err.message} - falha ao buscar autor` });
+    }
   };
 
-  //Usando async
   static cadastrarAutor = async (req, res) => {
     try {
       let autor = new autores(req.body);
