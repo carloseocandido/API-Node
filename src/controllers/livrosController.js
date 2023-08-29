@@ -3,19 +3,18 @@ import livros from "../models/Livro.js";
 class LivroController {
 
   //Usando Promises
-  static listarLivros = (req, res) => {
-    livros.find()
-      .populate("autor") //relacionando campo autor
-      .exec()
-      .then(livros => {
-        res.status(200).json(livros);
-      })
-      .catch(err => {
-        res.status(500).json({ message: `${err.message} - falha ao cadastrar livro` });
-      });
+  static listarLivros = async (req, res) => {
+
+    try {
+      const livrosResultado = await livros.find()
+        .populate("autor")
+        .exec();
+      res.status(200).json(livrosResultado);
+    } catch (err) {
+      res.status(500).json({ message: `${err.message} - falha ao buscar livros` });
+    }
   };
 
-  //Usando async
   static listarLivroPorId = async (req, res) => {
 
     try {
@@ -27,16 +26,6 @@ class LivroController {
     } catch (err) {
       res.status(500).json({ message: `${err.message} - falha ao buscar livro` });
     }
-    /* código old*/
-    // const id = req.params.id;
-
-    // livros.findById(id)
-    //     .then(livro => {
-    //         res.status(200).json(livro);
-    //     })
-    //     .catch(err => {
-    //         res.status(500).json({ message: `${err.message} - falha ao buscar livro` });
-    //     })
   };
 
   static cadastrarLivro = async (req, res) => {
