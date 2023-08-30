@@ -1,20 +1,23 @@
 import mongoose from "mongoose";
+import ErroBase from "../erros/erroBase.js";
+import RequisicaoIncorreta from "../erros/RequisicaoIncorreta.js";
+import ErroValidacao from "../erros/ErroValidacao.js";
+import Error404 from "../erros/Error404.js";
 
 // eslint-disable-next-line no-unused-vars
 function manipuladorDeErros(err, req, res, next) {
   console.log(err);
 
   if (err instanceof mongoose.Error.CastError)
-    return res.status(400).send({ message: "Um ou mais dados fornecidos estão incorretos." });
+    return new RequisicaoIncorreta().enviarResposta(res);
 
-  if (err instanceof mongoose.Error.ValidationError) {
-    const messagensErro = Object.values(err.errors)
-      .map(erro => erro.message)
-      .join("; ");
-    return res.status(400).send({ message: `Os seguintes erros foram encontrados: ${messagensErro}`});
-  }
+  if (err instanceof mongoose.Error.ValidationError) 
+    return new ErroValidacao(err).enviarResposta(res);
 
-  res.status(500).json({ message: `${err.message} - Erro interno de servidor.` });
+  if (err instanceof Error404)
+    return err.enviarResposta(res);
+
+  new ErroBase().enviarResposta(res);
 }
 
 

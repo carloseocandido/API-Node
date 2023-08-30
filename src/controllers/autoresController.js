@@ -1,3 +1,4 @@
+import Error404 from "../erros/Error404.js";
 import autores from "../models/Autor.js";
 
 class AutorController {
@@ -5,6 +6,7 @@ class AutorController {
   static listarAutores = async (req, res, next) => {
     try {
       const autoresResultado = await autores.find();
+      
       res.status(200).json(autoresResultado);
     } catch (err) {
       next(err);
@@ -17,7 +19,7 @@ class AutorController {
       const autor = await autores.findById(id);
 
       if (!autor)
-        return res.status(404).send({ message: "Id do Autor não localizado." });
+        next(new Error404("Id do Autor não localizado."));
 
       res.status(200).json(autor);
 

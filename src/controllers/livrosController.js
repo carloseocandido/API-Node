@@ -8,6 +8,7 @@ class LivroController {
       const livrosResultado = await livros.find()
         .populate("autor")
         .exec();
+        
       res.status(200).json(livrosResultado);
     } catch (err) {
       next(err);
