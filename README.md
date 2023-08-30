@@ -18,3 +18,4 @@ Este repositório contém uma API-REST simples construída em Node.js utilizando
 5. Acesse os endpoints da API para interagir com os recursos.
 
 Este projeto é ideal para desenvolvedores que desejam criar uma API-REST utilizando Node.js e MongoDB de forma eficiente e escalável. Sinta-se à vontade para contribuir, reportar problemas ou utilizar como base para suas próprias aplicações.
+Também é dedicado aos meus estudos.
