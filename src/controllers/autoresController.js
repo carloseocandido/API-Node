@@ -16,12 +16,12 @@ class AutorController {
   static listarAutorPorId = async (req, res, next) => {
     try {
       const id = req.params.id;
-      const autor = await autores.findById(id);
+      const autoresResultado = await autores.findById(id);
 
-      if (!autor)
-        next(new Error404("Id do Autor não localizado."));
+      if (!autoresResultado)
+        return next(new Error404("Id do Autor não localizado."));
 
-      res.status(200).json(autor);
+      res.status(200).json(autoresResultado);
 
     } catch (err) {
       next(err);
@@ -44,7 +44,10 @@ class AutorController {
     try {
       const id = req.params.id;
 
-      await autores.findByIdAndUpdate(id, { $set: req.body });
+      const autoresResultado = await autores.findByIdAndUpdate(id, { $set: req.body });
+
+      if (!autoresResultado)
+        return next(new Error404("Id do Autor não localizado."));
 
       res.status(200).json({ message: "autor atualizado com sucesso." });
     } catch (err) {
@@ -56,8 +59,11 @@ class AutorController {
     try {
       const id = req.params.id;
 
-      await autores.findByIdAndDelete(id);
+      const autoresResultado = await autores.findByIdAndDelete(id);
 
+      if (!autoresResultado)
+        return next(new Error404("Id do Autor não localizado."));
+    
       res.status(200).json({ message: "autor excluído com sucesso." });
     } catch (err) {
       next(err);

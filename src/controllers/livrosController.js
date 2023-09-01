@@ -1,3 +1,4 @@
+import Error404 from "../erros/Error404.js";
 import livros from "../models/Livro.js";
 
 class LivroController {
@@ -20,10 +21,14 @@ class LivroController {
 
     try {
       const id = req.params.id;
-      const livro = await livros.findById(id)
+      const livrosResultado = await livros.findById(id)
         .populate("autor", "nome")
         .exec();
-      res.status(200).json(livro);
+        
+      if (!livrosResultado)
+        return next(new Error404("Id do livro não encontrado"));
+    
+      res.status(200).json(livrosResultado);
     } catch (err) {
       next(err);
     }
@@ -44,7 +49,11 @@ class LivroController {
   static atualizarLivro = async (req, res, next) => {
     try {
       const id = req.params.id;
-      await livros.findByIdAndUpdate(id, { $set: req.body });
+      const livrosResultado = await livros.findByIdAndUpdate(id, { $set: req.body });
+      
+      if (!livrosResultado)
+        return next(new Error404("Id do livro não encontrado."));
+
       res.status(200).json({ message: "Livro atualizado com sucesso" });
     } catch (err) {
       next(err);
@@ -52,10 +61,14 @@ class LivroController {
 
   };
 
-  static excluirLivro = async (req, res) => {
+  static excluirLivro = async (req, res, next) => {
     try {
       const id = req.params.id;
-      await livros.findByIdAndDelete(id);
+      const livrosResultado = await livros.findByIdAndDelete(id);
+
+      if (!livrosResultado)
+        return next(new Error404("Id do livro não encontrado"));
+
       res.status(200).json({ message: "Livro excluído com sucesso." });
     } catch (err) {
       res.status(500).json({ message: `${err.message} - falha ao excluir livro.` });
@@ -63,12 +76,16 @@ class LivroController {
 
   };
 
-  static listarLivroPorEditora = async (req, res) => {
+  static listarLivroPorEditora = async (req, res, next) => {
     try {
       const editora = req.query.editora;
 
-      const livro = await livros.find({ "editora": editora }, {});
-      res.status(200).json(livro);
+      const livrosResultado = await livros.find({ "editora": editora }, {});
+
+      if (!livrosResultado)
+        return next(new Error404("Editora não encontrado"));
+
+      res.status(200).json(livrosResultado);
     } catch (err) {
       res.status(500).json({ message: `${err.message} - falha ao encontrar livro por editora.` });
     }
