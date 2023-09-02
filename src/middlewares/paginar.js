@@ -19,8 +19,7 @@ async function paginar(req, res, next) {
     const resultadoPaginado = await resultado.find()
       .sort({ [campoOrdenacao]: ordem })
       .skip((pagina - 1) * limite)
-      .limit(limite)
-      .exec();
+      .limit(limite);
 
     res.status(200).json(resultadoPaginado);
   } catch (err) {
