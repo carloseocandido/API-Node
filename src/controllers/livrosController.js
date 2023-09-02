@@ -91,17 +91,13 @@ class LivroController {
 async function processaBusca(parametros) {
   const { editora, titulo, minPaginas, maxPaginas, nomeAutor } = parametros;
 
-  // const regex = new RegExp(titulo, "i"); regex com js puro
-
   let busca = {};
 
   if (editora) busca.editora = editora;
-  if (titulo) busca.titulo = { $regex: titulo, $options: "i" }; //regex com mongo
+  if (titulo) busca.titulo = { $regex: titulo, $options: "i" }; 
 
   if (minPaginas || maxPaginas) busca.numeroPaginas = {};
 
-  // if (minPaginas) busca.numeroPaginas = { $gte: minPaginas }; //gte = Greater Than or Equal = Maior ou igual que
-  // if (maxPaginas) busca.numeroPaginas = { $lte: maxPaginas }; //lte = Less Than or Equal = Menor ou Igual que
   if (minPaginas) busca.numeroPaginas.$gte = minPaginas;
   if (maxPaginas) busca.numeroPaginas.$lte = maxPaginas;
   
