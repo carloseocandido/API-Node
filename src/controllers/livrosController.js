@@ -1,12 +1,19 @@
 import Error404 from "../erros/Error404.js";
+import RequisicaoIncorreta from "../erros/RequisicaoIncorreta.js";
 import { autores, livros } from "../models/index.js";
 
 class LivroController {
 
   static listarLivros = async (req, res, next) => {
-
     try {
+      const { limite = 5, pagina = 1 } = req.query;
+
+      if (limite <= 0 || pagina <= 0)
+        return next(new RequisicaoIncorreta());
+
       const livrosResultado = await livros.find()
+        .skip((pagina - 1) * limite)
+        .limit(limite)
         .populate("autor")
         .exec();
         
@@ -14,11 +21,9 @@ class LivroController {
     } catch (err) {
       next(err);
     }
-
   };
 
   static listarLivroPorId = async (req, res, next) => {
-
     try {
       const id = req.params.id;
       const livrosResultado = await livros.findById(id)
@@ -32,7 +37,6 @@ class LivroController {
     } catch (err) {
       next(err);
     }
-
   };
 
   static cadastrarLivro = async (req, res, next) => {
@@ -43,7 +47,6 @@ class LivroController {
     } catch (err) {
       next(err);
     }
-
   };
 
   static atualizarLivro = async (req, res, next) => {
@@ -58,7 +61,6 @@ class LivroController {
     } catch (err) {
       next(err);
     }
-
   };
 
   static excluirLivro = async (req, res, next) => {
@@ -73,7 +75,6 @@ class LivroController {
     } catch (err) {
       res.status(500).json({ message: `${err.message} - falha ao excluir livro.` });
     }
-
   };
 
   static listarLivroPorFiltro = async (req, res, next) => {
@@ -94,7 +95,6 @@ class LivroController {
     } catch (err) {
       res.status(500).json({ message: `${err.message} - falha ao encontrar livro por editora.` });
     }
-
   };
 }
 
@@ -104,7 +104,6 @@ async function processaBusca(parametros) {
   // const regex = new RegExp(titulo, "i"); regex com js puro
 
   let busca = {};
-
 
   if (editora) busca.editora = editora;
   if (titulo) busca.titulo = { $regex: titulo, $options: "i" }; //regex com mongo
