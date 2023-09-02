@@ -1,31 +1,15 @@
 import Error404 from "../erros/Error404.js";
-import RequisicaoIncorreta from "../erros/RequisicaoIncorreta.js";
 import { autores, livros } from "../models/index.js";
 
 class LivroController {
 
   static listarLivros = async (req, res, next) => {
     try {
-      // let { limite = 5, pagina = 1, campoOrdenacao = "_id", ordem = -1 } = req.query;
-      let { limite = 5, pagina = 1, ordenacao = "_id:-1" } = req.query;
-      
-      let [campoOrdenacao, ordem] = ordenacao.split(":");
-      
-      limite = parseInt(limite);
-      pagina = parseInt(pagina);
-      ordem = parseInt(ordem);
+      const buscaLivros = livros.find();
 
-      if (limite <= 0 || pagina <= 0)
-        return next(new RequisicaoIncorreta());
-
-      const livrosResultado = await livros.find()
-        .sort({ [campoOrdenacao]: ordem })
-        .skip((pagina - 1) * limite)
-        .limit(limite)
-        .populate("autor")
-        .exec();
-        
-      res.status(200).json(livrosResultado);
+      req.resultado = buscaLivros;
+      
+      next();
     } catch (err) {
       next(err);
     }
@@ -92,14 +76,16 @@ class LivroController {
       if (busca == null)
         return res.status(200).send([]);
 
-      const livrosResultado = await livros
+      const livrosResultado = livros
         .find(busca)
         .populate("autor");
+
+      req.resultado = livrosResultado;
 
       if (!livrosResultado)
         return next(new Error404("Editora não encontrado"));
 
-      res.status(200).json(livrosResultado);
+      next();
     } catch (err) {
       res.status(500).json({ message: `${err.message} - falha ao encontrar livro por editora.` });
     }
