@@ -51,7 +51,7 @@ class AutorController {
       if (!autoresResultado)
         return next(new Error404("Id do Autor não localizado."));
 
-      res.status(200).json({ message: "autor atualizado com sucesso." });
+      res.status(200).json({ message: "Autor atualizado com sucesso." });
     } catch (err) {
       next(err);
     }
@@ -66,7 +66,7 @@ class AutorController {
       if (!autoresResultado)
         return next(new Error404("Id do Autor não localizado."));
     
-      res.status(200).json({ message: "autor excluído com sucesso." });
+      res.status(200).json({ message: "Autor excluído com sucesso." });
     } catch (err) {
       next(err);
     }
